@@ -1,24 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppConfig } from './configs/app.config';
-import * as fromEntities from './entities';
-
-const entities = [
-  fromEntities.Booking,
-  fromEntities.Branch,
-  fromEntities.Cinema,
-  fromEntities.Movie,
-  fromEntities.ShowTime,
-  fromEntities.Ticket,
-  fromEntities.User,
-];
+import entities from './entities';
+import controllers from './controllers';
+import services from './services';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(AppConfig.getTypeOrmConfig()),
     TypeOrmModule.forFeature(entities),
   ],
-  controllers: [],
-  providers: []
+  controllers: controllers,
+  providers: services,
 })
 export class AppModule {}

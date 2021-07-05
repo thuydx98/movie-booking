@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class initial1625421249427 implements MigrationInterface {
-    name = 'initial1625421249427'
+export class initial1625503457687 implements MigrationInterface {
+    name = 'initial1625503457687'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "branch" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "address" character varying NOT NULL, CONSTRAINT "PK_2e39f426e2faefdaa93c5961976" PRIMARY KEY ("id"))`);
@@ -9,7 +9,7 @@ export class initial1625421249427 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "movie" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "publishAt" TIMESTAMP NOT NULL DEFAULT now(), "posterUrl" TIMESTAMP NOT NULL DEFAULT now(), "duration" integer NOT NULL, CONSTRAINT "PK_cb3bb4d61cf764dc035cbedd422" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "show_time" ("id" SERIAL NOT NULL, "startAt" TIMESTAMP NOT NULL DEFAULT now(), "endAt" TIMESTAMP NOT NULL DEFAULT now(), "cinemaId" integer, "movieId" integer, CONSTRAINT "PK_cc3f4dd59958b5eb12a0b64a525" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "ticket" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "seat" character varying NOT NULL, "price" integer NOT NULL, "bookingId" uuid, CONSTRAINT "PK_d9a0835407701eb86f874474b7c" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "user" ("id" SERIAL NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "name" character varying NOT NULL, "phone" character varying NOT NULL, "isActive" boolean NOT NULL DEFAULT false, "activationCode" character varying NOT NULL, "role" character varying NOT NULL DEFAULT 'user', CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "user" ("id" SERIAL NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "name" character varying NOT NULL, "phone" character varying, "isActive" boolean NOT NULL DEFAULT false, "activationCode" character varying, "role" character varying NOT NULL DEFAULT 'user', CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "booking" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "at" TIMESTAMP NOT NULL DEFAULT now(), "totalMoney" integer NOT NULL, "userId" integer, "showTimeId" integer, CONSTRAINT "PK_49171efc69702ed84c812f33540" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "cinema" ADD CONSTRAINT "FK_8a5db14c8c0508c1f906f9d3ee8" FOREIGN KEY ("branchId") REFERENCES "branch"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "show_time" ADD CONSTRAINT "FK_386797ee3943145250ea675907e" FOREIGN KEY ("cinemaId") REFERENCES "cinema"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);

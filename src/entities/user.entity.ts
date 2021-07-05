@@ -16,13 +16,13 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
   @Column({ default: false })
   isActive: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   activationCode: string;
 
   @Column({ default: AppRoles.User })
