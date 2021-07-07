@@ -18,12 +18,12 @@ export class Movie {
   @CreateDateColumn({ type: 'timestamp' })
   publishAt: Date;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @Column()
   posterUrl: string;
 
   @Column()
   duration: number;
 
   @OneToMany(() => ShowTime, (showTime) => showTime.movie)
-  showTimes: ShowTime;
+  showTimes: ShowTime[];
 }
