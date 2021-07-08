@@ -11,6 +11,10 @@ export class ShowTimesService {
     private showTimesRepository: Repository<ShowTime>,
   ) {}
 
+  async getOne(id: number): Promise<ShowTime> {
+    return this.showTimesRepository.findOne({ where: { id } });
+  }
+
   async getList(params: GetListShowTimeDto): Promise<ShowTimeDto[]> {
     const condition: string[] = [];
     if (params.branchId) {
@@ -24,9 +28,7 @@ export class ShowTimesService {
     }
     if (params.date) {
       condition.push(
-        `show_time.startAt >= '${new Date(
-          params.date,
-        ).toISOString()}'::timestamp`,
+        `show_time.startAt >= '${new Date(params.date).toISOString()}'::date`,
       );
     }
 

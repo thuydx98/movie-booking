@@ -27,6 +27,6 @@ export class Booking {
   @ManyToOne(() => ShowTime, (showTime) => showTime.bookings)
   showTime: ShowTime;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.booking)
-  tickets: Ticket;
+  @OneToMany(() => Ticket, (ticket) => ticket.booking, { cascade: true })
+  tickets: Ticket[];
 }
