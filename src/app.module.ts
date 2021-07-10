@@ -4,11 +4,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { join } from 'path';
 import { AppConfig } from './configs/app.config';
 import entities from './entities';
 import controllers from './controllers';
 import services from './services';
+import providers from './providers';
 import { JWT_SECRET } from './constants/auth.const';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -45,6 +45,7 @@ console.log(__dirname);
   controllers: controllers,
   providers: [
     ...services,
+    ...providers,
     JwtStrategy,
     {
       provide: APP_GUARD,

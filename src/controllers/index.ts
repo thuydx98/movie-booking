@@ -1,3 +1,4 @@
+import { FilesController } from './files.controller';
 import { AuthController } from './auth.controller';
 import { BookingsController } from './bookings.controller';
 import { BranchesController } from './branches.controller';
@@ -9,6 +10,7 @@ export default [
   AuthController,
   BookingsController,
   BranchesController,
+  FilesController,
   MoviesController,
   ShowTimesController,
   UsersController,
