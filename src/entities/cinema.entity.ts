@@ -30,4 +30,7 @@ export class Cinema {
 
   @OneToMany(() => ShowTime, (showTime) => showTime.cinema)
   showTimes: ShowTime;
+
+	@Column({ default: false })
+	deleted: boolean;
 }

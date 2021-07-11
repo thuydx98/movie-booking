@@ -4,10 +4,12 @@ import { BranchesService } from './branches.service';
 import { MoviesService } from './movies.service';
 import { ShowTimesService } from './show-times.service';
 import { UsersService } from './users.service';
+import { CinemasService } from './cinemas.service';
 
 export default [
   BookingsService,
   BranchesService,
+  CinemasService,
   CloudinaryService,
   UsersService,
   MoviesService,

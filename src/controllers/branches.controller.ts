@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { Public } from 'src/constants/app.const';
-import { BranchDto } from 'src/models/branch.dto';
+import { BranchDto, CreateBranchDto } from 'src/models/branch.dto';
 import { BranchesService } from 'src/services/branches.service';
 
 @Controller('api/branches')
@@ -12,4 +12,14 @@ export class BranchesController {
   async getList(): Promise<BranchDto[]> {
     return await this.branchService.getList();
   }
+
+	@Post()
+	async create(@Body() dto: CreateBranchDto): Promise<BranchDto> {
+		return await this.branchService.create(dto);
+	}
+
+	@Delete(':id')
+	async delete(@Param() params): Promise<void> {
+		await this.branchService.delete(params.id);
+	}
 }

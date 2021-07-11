@@ -1,29 +1,29 @@
 import { ShowTime } from './show-time.entity';
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Movie {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+	@PrimaryGeneratedColumn('increment')
+	id: number;
 
-  @Column()
-  name: string;
+	@Column()
+	name: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  publishAt: Date;
+	@Column({ default: 13 })
+	age: number;
 
-  @Column()
-  posterUrl: string;
+	@CreateDateColumn({ type: 'timestamp' })
+	publishAt: Date;
 
-  @Column()
-  duration: number;
+	@Column()
+	posterUrl: string;
 
-  @OneToMany(() => ShowTime, (showTime) => showTime.movie)
-  showTimes: ShowTime[];
+	@Column()
+	duration: number;
+
+	@OneToMany(() => ShowTime, (showTime) => showTime.movie)
+	showTimes: ShowTime[];
+
+	@Column({ default: false })
+	deleted: boolean;
 }

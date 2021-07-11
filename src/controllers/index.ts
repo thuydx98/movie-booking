@@ -5,11 +5,13 @@ import { BranchesController } from './branches.controller';
 import { MoviesController } from './movies.controller';
 import { ShowTimesController } from './show-times.controller';
 import { UsersController } from './users.controller';
+import { CinemasController } from './cinemas.controller';
 
 export default [
   AuthController,
   BookingsController,
   BranchesController,
+  CinemasController,
   FilesController,
   MoviesController,
   ShowTimesController,

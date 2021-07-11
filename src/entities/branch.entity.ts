@@ -12,6 +12,9 @@ export class Branch {
   @Column()
   address: string;
 
-  @OneToMany(() => Cinema, (cinema) => cinema.branch)
+  @OneToMany(() => Cinema, (cinema) => cinema.branch, { cascade: true })
   cinemas: Cinema[];
+
+	@Column({ default: false })
+	deleted: boolean;
 }

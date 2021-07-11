@@ -17,6 +17,7 @@ export class GetPagingListMovieDto {
 export class MovieDto {
   id: number;
   name: string;
+  age: number;
   publishAt: Date;
   posterUrl: string;
   duration: number;
@@ -24,8 +25,17 @@ export class MovieDto {
   constructor(movie: Movie) {
     this.id = movie.id;
     this.name = movie.name;
+    this.age = movie.age;
     this.publishAt = movie.publishAt;
     this.posterUrl = movie.posterUrl;
     this.duration = movie.duration;
   }
+}
+
+export class CreateMovieDto {
+  name: string;
+  age: number;
+  publishAt: Date;
+  posterUrl: string;
+  duration: number;
 }
