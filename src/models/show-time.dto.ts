@@ -5,7 +5,9 @@ import { ShowTime } from 'src/entities/show-time.entity';
 
 export class GetListShowTimeDto {
   @ApiProperty({ type: Date, required: false })
-  public date: Date;
+  public startTime: Date;
+  @ApiProperty({ type: Date, required: false })
+  public endTime: Date;
   @ApiProperty({ type: Number, required: false })
   public movieId: number;
   @ApiProperty({ type: Number, required: false })
@@ -28,4 +30,11 @@ export class ShowTimeDto {
     this.cinema = show.cinema;
     this.movie = show.movie;
   }
+}
+
+export class CreateShowTimeDto {
+  startAt: Date;
+  endAt: Date;
+  cinemaId: number;
+  movieId: number;
 }
