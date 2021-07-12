@@ -37,7 +37,7 @@ export class ShowTimesService {
 		}
 		if (params.endTime) {
 			const date = new Date(params.endTime);
-			condition.push(`show_time.startAt <= '${new Date(date.getTime() + 1000 * 60 * 60 * 24).toISOString()}'::date`);
+			condition.push(`show_time.startAt < '${new Date(date.getTime() + 1000 * 60 * 60 * 24).toISOString()}'::date`);
 		}
 
 		const whereQuery = condition.join(' and ');

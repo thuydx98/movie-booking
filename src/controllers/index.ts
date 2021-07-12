@@ -6,6 +6,7 @@ import { MoviesController } from './movies.controller';
 import { ShowTimesController } from './show-times.controller';
 import { UsersController } from './users.controller';
 import { CinemasController } from './cinemas.controller';
+import { ReportsController } from './reports.controller';
 
 export default [
   AuthController,
@@ -14,6 +15,7 @@ export default [
   CinemasController,
   FilesController,
   MoviesController,
+  ReportsController,
   ShowTimesController,
   UsersController,
 ];
