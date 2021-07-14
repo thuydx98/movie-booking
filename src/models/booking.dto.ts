@@ -14,7 +14,7 @@ export class BookingDto {
     this.id = entity.id;
     this.at = entity.at;
     this.totalMoney = entity.totalMoney;
-    this.showTime = new ShowTimeDto(entity.showTime);
+    this.showTime = entity.showTime && new ShowTimeDto(entity.showTime);
     this.tickets = entity.tickets.map((item) => new TicketDto(item));
   }
 }
