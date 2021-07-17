@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateShowTimeDto, GetListShowTimeDto, ShowTimeDto } from 'src/models/show-time.dto';
 import { Repository } from 'typeorm';
+import * as moment from 'moment';
 import { ShowTime } from '../entities/show-time.entity';
 
 @Injectable()
@@ -33,13 +34,14 @@ export class ShowTimesService {
 			condition.push(`cinema.id = ${params.cinemaId}`);
 		}
 		if (params.startTime) {
-			const date = this.formatDate(new Date(params.startTime), 'yyyy-MM-dd hh:mm:ss');
+			const date = moment(params.startTime).utc().format('YYYY-MM-DD HH:mm:ss');
 			condition.push(`show_time.startAt >= '${date}'::timestamp`);
 		}
 		if (params.endTime) {
-			const date = this.formatDate(new Date(new Date(params.endTime).getTime() + 1000 * 60 * 60 * 24), 'yyyy-MM-dd hh:mm:ss');;
-			condition.push(`show_time.startAt < '${date}'::timestamp`);
+			const date = moment(params.endTime).utc().format('YYYY-MM-DD HH:mm:ss');
+			condition.push(`show_time.startAt <= '${date}'::timestamp`);
 		}
+		
 		const whereQuery = condition.join(' and ');
 		const showTimes = await this.showTimesRepository
 			.createQueryBuilder('show_time')
@@ -65,22 +67,5 @@ export class ShowTimesService {
 
 	async delete(id: any): Promise<void> {
 		await this.showTimesRepository.delete(id);
-	}
-
-	private formatDate(date, format) {
-		var z = {
-			M: date.getMonth() + 1,
-			d: date.getDate(),
-			h: date.getHours(),
-			m: date.getMinutes(),
-			s: date.getSeconds()
-		};
-		format = format.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
-			return ((v.length > 1 ? "0" : "") + z[v.slice(-1)]).slice(-2)
-		});
-	
-		return format.replace(/(y+)/g, function(v) {
-			return date.getFullYear().toString().slice(-v.length)
-		});
 	}
 }

@@ -5,13 +5,19 @@ import { BranchesService } from 'src/services/branches.service';
 
 @Controller('api/branches')
 export class BranchesController {
-  constructor(private branchService: BranchesService) {}
+	constructor(private branchService: BranchesService) {}
 
-  @Get()
-  @Public()
-  async getList(): Promise<BranchDto[]> {
-    return await this.branchService.getList();
-  }
+	@Get()
+	@Public()
+	async getList(): Promise<BranchDto[]> {
+		return await this.branchService.getList();
+	}
+
+	@Get(':id')
+	@Public()
+	async get(@Param() params): Promise<BranchDto> {
+		return await this.branchService.get(params.id);
+	}
 
 	@Post()
 	async create(@Body() dto: CreateBranchDto): Promise<BranchDto> {

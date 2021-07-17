@@ -4,8 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PagingDto } from 'src/constants/app.const';
 import { CreateMovieDto, GetPagingListMovieDto, MovieDto } from 'src/models/movie.dto';
 import { Repository } from 'typeorm';
+import * as  moment from 'moment';
 import { Movie } from '../entities/movie.entity';
-import { EntityFieldsNames } from 'typeorm/common/EntityFieldsNames';
 
 @Injectable()
 export class MoviesService {
@@ -15,56 +15,47 @@ export class MoviesService {
 	) {}
 
 	async getPagingList(params: GetPagingListMovieDto): Promise<PagingDto<MovieDto>> {
-		if (params.sort === MovieSortType.View) {
-			return await this.getPagingListSortByView(params);
-		}
-
-		let order: {
-			[P in EntityFieldsNames<Movie>]?: 'ASC' | 'DESC' | 1 | -1;
-		};
-
-		switch (params.sort) {
-			case MovieSortType.Name:
-				order = { name: 'ASC' };
-				break;
-			case MovieSortType.Newest:
-				order = { publishAt: 'DESC' };
-				break;
-		}
-
-		const [movies, total] = await this.moviesRepository.findAndCount({
-			where: { deleted: false },
-			order: order,
-			skip: (params.page - 1) * params.size,
-			take: params.size,
-		});
-
-		return new PagingDto<MovieDto>(
-			params.page,
-			params.size,
-			total,
-			movies.map((item) => new MovieDto(item))
-		);
-	}
-
-	private async getPagingListSortByView(params: GetPagingListMovieDto): Promise<PagingDto<MovieDto>> {
-		const total = await this.moviesRepository.count();
-		const movies = await this.moviesRepository
+		const date = params.showTimeFrom ? moment(params.showTimeFrom).utc().format('YYYY-MM-DD HH:mm:ss') : undefined;
+		let builder = this.moviesRepository
 			.createQueryBuilder('movie')
-			.where('movie.deleted = false')
 			.leftJoinAndSelect('movie.showTimes', 'showTime')
 			.leftJoinAndSelect('showTime.bookings', 'booking')
-			.skip((params.page - 1) * params.size)
-			.take(params.size)
-			.getMany()
-			.then((data) =>
-				data
-					.map((a) => ({
-						...a,
-						totalViews: a.showTimes.reduce((a, b) => a + b.bookings.length, 0),
-					}))
-					.sort((a, b) => b.totalViews - a.totalViews)
-			);
+			.where('movie.deleted = false')
+			.andWhere(date ? `showTime.startAt >= '${date}'::timestamp` : '1=1');
+
+		let movies = [];
+		if (params.sort === MovieSortType.Name) {
+			movies = await builder
+				.orderBy('movie.name', 'ASC')
+				.skip((params.page - 1) * params.size)
+				.take(params.size)
+				.getMany();
+		}
+
+		if (params.sort === MovieSortType.Newest) {
+			movies = await builder
+				.orderBy('movie.publishAt', 'DESC')
+				.skip((params.page - 1) * params.size)
+				.take(params.size)
+				.getMany();
+		}
+
+		if (params.sort === MovieSortType.View) {
+			movies = await builder
+				.skip((params.page - 1) * params.size)
+				.take(params.size)
+				.getMany()
+				.then((data) =>
+					data
+						.map((a) => ({
+							...a,
+							totalViews: a.showTimes.reduce((a, b) => a + b.bookings.length, 0),
+						}))
+						.sort((a, b) => b.totalViews - a.totalViews)
+				);
+		}
+
+		const total = await builder.getCount();
 
 		return new PagingDto<MovieDto>(
 			params.page,

@@ -5,13 +5,18 @@ import { Movie } from 'src/entities/movie.entity';
 export class GetPagingListMovieDto {
   @ApiProperty({ type: Number, default: 1, required: false })
   public page = 1;
+
   @ApiProperty({ type: Number, default: 10, required: false })
   public size = 10;
+
   @ApiProperty({
     required: false,
     enum: [MovieSortType.Name, MovieSortType.Newest, MovieSortType.View],
   })
   public sort: string = MovieSortType.Name;
+  
+  @ApiProperty({ type: Date, required: false })
+  public showTimeFrom;
 }
 
 export class MovieDto {

@@ -21,6 +21,15 @@ export class BranchesService {
 		return branches.map((item) => new BranchDto(item));
 	}
 
+	async get(id: number): Promise<BranchDto> {
+		const branch = await this.branchesRepository.findOne({
+			where: { id: +id, deleted: false },
+			relations: ['cinemas'],
+		});
+
+		return new BranchDto(branch);
+	}
+
 	async create(dto: CreateBranchDto): Promise<BranchDto> {
 		const movie = await this.branchesRepository.save(dto);
 		return new BranchDto(movie);

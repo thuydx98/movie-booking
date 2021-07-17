@@ -95,7 +95,7 @@ export class AuthController {
       throw new HttpException('user-verified', HttpStatus.BAD_REQUEST);
     }
 
-    if (user.activationCode !== dto.code) {
+    if (+user.activationCode !== +dto.code) {
       throw new HttpException('invalid-verify-code', HttpStatus.BAD_REQUEST);
     }
 
@@ -140,8 +140,8 @@ export class AuthController {
     if (!user) {
       throw new HttpException('user-not-exist', HttpStatus.BAD_REQUEST);
     }
-
-    if (user.activationCode !== dto.code) {
+    
+    if (+user.activationCode !== +dto.code) {
       throw new HttpException('wrong-activation-code', HttpStatus.BAD_REQUEST);
     }
   }
@@ -154,7 +154,7 @@ export class AuthController {
       throw new HttpException('user-not-exist', HttpStatus.BAD_REQUEST);
     }
 
-    if (user.activationCode !== dto.code) {
+    if (+user.activationCode !== +dto.code) {
       throw new HttpException('wrong-activation-code', HttpStatus.BAD_REQUEST);
     }
 
